@@ -53,6 +53,21 @@ public class GameManager : MonoBehaviour
             case State.SetupTransition:
                 _audioManager.StartHighPassFilter(_cameraFollow.ChangeViewSpeed);
 
+                switch (_currentView)
+                {
+                    case ViewHandler.Views.Side:
+                        _audioManager.PlaySideBgm();
+                        break;
+                    case ViewHandler.Views.Front:
+                        _audioManager.PlayFrontBgm();
+                        break;
+                    case ViewHandler.Views.Top:
+                        _audioManager.PlayTopBgm();
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
                 Time.timeScale = 0.1f;
                 GameState = State.Transition;
                 break;

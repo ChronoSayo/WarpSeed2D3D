@@ -1,21 +1,33 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     public int CutoffFrequencyStart = 2000;
-    
-    private AudioSource _source;
+    public float SongChangeSpeed = 5;
+
+    /// <summary>
+    /// 0: Side, 1: Front, 2: Top
+    /// </summary>
+    private List<AudioSource> _sources;
     private AudioHighPassFilter _highPass;
     private bool _highPassFilterEnabled;
     private bool _reverseCutoffFrequencySpeed;
     private float _transitionSpeed;
+    private int _currentSong;
 
     private const float FrequencyDefault = 5000;
 
     // Start is called before the first frame update
     void Start()
     {
-        _source = GetComponent<AudioSource>();
+        _sources = new List<AudioSource>();
+        foreach (AudioSource source in transform.GetComponents<AudioSource>())
+        {
+            if(_sources.Contains(source))
+                continue;
+            _sources.Add(source);
+        }
 
         _highPass = GetComponent<AudioHighPassFilter>();
         _highPass.highpassResonanceQ = 5;
@@ -39,19 +51,30 @@ public class AudioManager : MonoBehaviour
                 cutoffSpeed *= -1;
             _highPass.cutoffFrequency -= cutoffSpeed;
         }
+
+        if (_sources[_currentSong].volume < 1)
+        {
+            for (int i = 0; i < _sources.Count; i++)
+            {
+                if(i == _currentSong)
+                    _sources[i].volume += SongChangeSpeed * Time.deltaTime;
+                else
+                    _sources[i].volume -= SongChangeSpeed * Time.deltaTime;
+            }
+        }
     }
 
     public void PlaySideBgm()
     {
-
+        _currentSong = 0;
     }
     public void PlayFrontBgm()
     {
-
+        _currentSong = 1;
     }
     public void PlayTopBgm()
     {
-
+        _currentSong = 2;
     }
 
     public void StartHighPassFilter(float transitionSpeed)

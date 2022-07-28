@@ -8,18 +8,21 @@ public class ViewHandler : MonoBehaviour
     }
     public Views CurrentView { get; private set; }
 
-    private Views _oldView;
+    private GameManager _gameManager;
 
     // Start is called before the first frame update
     void Start()
     {
         CurrentView = Views.Side;
-        _oldView = CurrentView;
+        _gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(_gameManager.GameState != GameManager.State.Active)
+            return;
+
         if (Input.GetKey(KeyCode.Alpha1))
             CurrentView = Views.Side;
         else if(Input.GetKey(KeyCode.Alpha2))
