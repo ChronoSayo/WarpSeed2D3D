@@ -171,7 +171,7 @@ public class Player : MonoBehaviour
                 targetPos = transform.position;
                 break;
             case ViewHandler.Views.Top:
-                targetPos = CameraPoint.position;
+                targetPos = new Vector3(transform.position.x, CameraPoint.position.y, transform.position.z);
                 targetRot = transform.rotation;
                 _reversedTopControls = CameraPoint.GetComponent<CameraPoint>().ReversedTopCamera;
                 break;

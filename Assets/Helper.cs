@@ -14,7 +14,6 @@ public static class Helper
         {
             transform.position = Vector3.Lerp(startPosition, targetPosition, time / duration);
             transform.rotation = Quaternion.Lerp(startRotation, targetRotation, time / duration);
-            Debug.Log(targetRotation.eulerAngles == Vector3.right);
             time += Time.unscaledDeltaTime;
             yield return null;
         }
